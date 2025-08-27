@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>МедЦентр | Запись на прием</title>
+    <style>
+        /* Reset & Base Styles (аналогично первому лендингу) */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; line-height: 1.6; color: #333; background-color: #f0f8ff; }
+        .container { width: 90%; max-width: 1200px; margin: 0 auto; padding: 20px; }
+
+        /* Header */
+        header { background: #1a75bc; color: white; padding: 1rem 0; position: sticky; top: 0; z-index: 100; }
+        .header-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.5rem; font-weight: bold; }
+        nav ul { display: flex; list-style: none; }
+        nav li { margin-left: 2rem; }
+        nav a { color: white; text-decoration: none; transition: color 0.3s; }
+        nav a:hover { color: #ffcc00; }
+
+        /* Hero Section */
+        .hero { background: url('https://placehold.co/1200x600/1a75bc/white?text=МедЦентр+Здоровье') no-repeat center center/cover; color: white; text-align: center; padding: 6rem 1rem; border-radius: 8px; margin-bottom: 2rem; }
+        .hero h1 { font-size: 2.5rem; margin-bottom: 1rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
+        .hero p { font-size: 1.2rem; max-width: 600px; margin: 0 auto 2rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
+        .btn { display: inline-block; background: #1a75bc; color: white; padding: 0.8rem 1.8rem; text-decoration: none; border-radius: 5px; border: 2px solid #ffcc00; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
+        .btn:hover { background: #ffcc00; color: #1a75bc; }
+
+        /* Steps */
+        .steps { display: flex; justify-content: space-around; flex-wrap: wrap; margin: 2rem 0; }
+        .step { text-align: center; flex: 1; min-width: 200px; margin: 1rem; padding: 1.5rem; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .step-number { background: #1a75bc; color: white; width: 40px; height: 40px; line-height: 40px; border-radius: 50%; margin: 0 auto 1rem; }
+
+        /* Appointment Form */
+        .appointment { background: white; padding: 2rem; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #1a75bc; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem; }
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1rem; }
+        .doctor-card { border: 1px solid #ddd; padding: 1rem; margin: 0.5rem 0; border-radius: 5px; cursor: pointer; transition: background-color 0.2s; }
+        .doctor-card:hover, .doctor-card.selected { background-color: #e6f2ff; border-color: #1a75bc; }
+
+        /* Footer */
+        footer { background: #1a75bc; color: white; text-align: center; padding: 2rem 0; margin-top: 2rem; }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; }
+            nav ul { margin-top: 1rem; }
+            nav li { margin: 0 0.5rem; }
+            .hero { padding: 3rem 1rem; }
+            .hero h1 { font-size: 2rem; }
+            .steps { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container header-container">
+            <div class="logo">МедЦентр "Здоровье"</div>
+            <nav>
+                <ul>
+                    <li><a href="#services">Услуги</a></li>
+                    <li><a href="#doctors">Врачи</a></li>
+                    <li><a href="#appointment">Запись</a></li>
+                    <li><a href="#contacts">Контакты</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero">
+            <h1>Забота о вашем здоровье — наш главный приоритет</h1>
+            <p>Запишитесь на прием к лучшим специалистам города быстро и удобно.</p>
+            <a href="#appointment" class="btn">Записаться онлайн</a>
+        </section>
+
+        <section class="steps">
+            <div class="step">
+                <div class="step-number">1</div>
+                <h3>Выберите врача</h3>
+                <p>Подберите специалиста из нашего каталога.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <h3>Выберите время</h3>
+                <p>Запишитесь на удобную для вас дату и время.</p>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <h3>Подтвердите запись</h3>
+                <p>Введите ваши данные и подтвердите запись.</p>
+            </div>
+        </section>
+
+        <section id="appointment" class="appointment">
+            <h2>Онлайн-запись на прием</h2>
+            <form id="appointment-form">
+                <div class="form-group">
+                    <label for="specialty">Специальность врача*</label>
+                    <select id="specialty" name="specialty" required onchange="updateDoctors()">
+                        <option value="">-- Выберите специальность --</option>
+                        <option value="therapist">Терапевт</option>
+                        <option value="cardiologist">Кардиолог</option>
+                        <option value="dentist">Стоматолог</option>
+                        <option value="pediatrician">Педиатр</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Выберите врача*</label>
+                    <div id="doctors-container">
+                        <p>Пожалуйста, сначала выберите специальность.</p>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="appointment-date">Дата приема*</label>
+                        <input type="date" id="appointment-date" name="appointment-date" required min="">
+                    </div>
+                    <div class="form-group">
+                        <label for="appointment-time">Время приема*</label>
+                        <input type="time" id="appointment-time" name="appointment-time" required>
+                    </div>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="patient-name">Ваше ФИО*</label>
+                        <input type="text" id="patient-name" name="patient-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="patient-phone">Телефон*</label>
+                        <input type="tel" id="patient-phone" name="patient-phone" placeholder="+7 (XXX) XXX-XX-XX" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="patient-comment">Жалобы или комментарий</label>
+                    <textarea id="patient-comment" name="patient-comment" rows="3" placeholder="Опишите кратко причину обращения..."></textarea>
+                </div>
+
+                <button type="submit" class="btn">Подтвердить запись</button>
+            </form>
+        </section>
+    </main>
+
+    <footer class="container">
+        <p>© 2023 МедЦентр "Здоровье". Лицензия № ЛО-XX-01-123456 от 01.01.2023</p>
+        <p>Телефон для справок: +7 (812) 123-45-67</p>
+    </footer>
+
+    <script>
+        // Данные о врачах (в реальном проекте загружались бы с сервера)
+        const doctorsData = {
+            therapist: [
+                { id: 1, name: 'Иванова Анна Петровна', exp: '15 лет', rating: '4.9' },
+                { id: 2, name: 'Сидоров Сергей Васильевич', exp: '10 лет', rating: '4.8' }
+            ],
+            cardiologist: [
+                { id: 3, name: 'Кузнецова Ольга Игоревна', exp: '20 лет', rating: '5.0' }
+            ],
+            dentist: [
+                { id: 4, name: 'Петров Дмитрий Львович', exp: '8 лет', rating: '4.7' },
+                { id: 5, name: 'Смирнова Екатерина Александровна', exp: '12 лет', rating: '4.9' }
+            ],
+            pediatrician: [
+                { id: 6, name: 'Фролова Мария Сергеевна', exp: '18 лет', rating: '5.0' }
+            ]
+        };
+
+        // Установка минимальной даты (сегодня)
+        document.getElementById('appointment-date').min = new Date().toISOString().split('T')[0];
+
+        let selectedDoctorId = null;
+
+        // Обновление списка врачей
+        function updateDoctors() {
+            const specialty = document.getElementById('specialty').value;
+            const container = document.getElementById('doctors-container');
+            container.innerHTML = '';
+
+            if (!specialty) {
+                container.innerHTML = '<p>Пожалуйста, сначала выберите специальность.</p>';
+                return;
+            }
+
+            const doctors = doctorsData[specialty];
+            if (doctors && doctors.length > 0) {
+                doctors.forEach(doctor => {
+                    const card = document.createElement('div');
+                    card.className = 'doctor-card';
+                    card.innerHTML = `
+                        <strong>${doctor.name}</strong><br>
+                        Опыт работы: ${doctor.exp}<br>
+                        Рейтинг: ${doctor.rating}
+                        <input type="radio" name="doctor" value="${doctor.id}" style="display: none;">
+                    `;
+                    card.addEventListener('click', () => {
+                        // Снимаем выделение со всех карточек
+                        document.querySelectorAll('.doctor-card').forEach(c => c.classList.remove('selected'));
+                        // Выделяем текущую
+                        card.classList.add('selected');
+                        // Устанавливаем значение радиокнопки
+                        card.querySelector('input[type="radio"]').checked = true;
+                        selectedDoctorId = doctor.id;
+                    });
+                    container.appendChild(card);
+                });
+            } else {
+                container.innerHTML = '<p>К сожалению, врачи этой специальности сейчас недоступны.</p>';
+            }
+        }
+
+        // Обработка формы записи
+        document.getElementById('appointment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            if (!selectedDoctorId) {
+                alert('Пожалуйста, выберите врача.');
+                return;
+            }
+            // Здесь код для отправки данных на сервер
+            console.log('Данные записи к врачу:', {
+                specialty: document.getElementById('specialty').value,
+                doctorId: selectedDoctorId,
+                date: document.getElementById('appointment-date').value,
+                time: document.getElementById('appointment-time').value,
+                name: document.getElementById('patient-name').value,
+                phone: document.getElementById('patient-phone').value,
+                comment: document.getElementById('patient-comment').value
+            });
+            alert('Ваша запись успешно отправлена! С вами свяжутся для подтверждения.');
+            this.reset();
+            // Сброс выбора врача
+            document.querySelectorAll('.doctor-card').forEach(c => c.classList.remove('selected'));
+            selectedDoctorId = null;
+        });
+
+        // Маска для телефона
+        document.getElementById('patient-phone').addEventListener('input', function(e) {
+            e.target.value = e.target.value.replace(/[^0-9+()\s-]/g, '');
+        });
+    </script>
+</body>
+</html>
